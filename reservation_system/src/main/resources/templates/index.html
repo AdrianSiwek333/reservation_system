@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Rental</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">RoomRental</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/login}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/register}">Register</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-primary text-white text-center py-5">
+    <h1>Find Your Perfect Stay</h1>
+    <p>Book the best rooms at the best prices</p>
+    <form class="d-flex justify-content-center">
+        <input type="text" class="form-control w-25 me-2" placeholder="Search city or hotel...">
+        <input type="date" class="form-control w-25 me-2">
+        <input type="date" class="form-control w-25 me-2">
+        <button class="btn btn-warning">Search</button>
+    </form>
+</header>
+
+<div class="container mt-5">
+    <h2 class="text-center">Featured Rooms</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Room">
+                <div class="card-body">
+                    <h5 class="card-title">Luxury Suite</h5>
+                    <p class="card-text">A beautiful suite with ocean view.</p>
+                    <a href="#" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Room">
+                <div class="card-body">
+                    <h5 class="card-title">Cozy Apartment</h5>
+                    <p class="card-text">A comfortable place for your stay.</p>
+                    <a href="#" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Room">
+                <div class="card-body">
+                    <h5 class="card-title">Budget Room</h5>
+                    <p class="card-text">An affordable option for travelers.</p>
+                    <a href="#" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-light text-center py-3 mt-5">
+    <p>&copy; 2025 RoomRental. All Rights Reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
