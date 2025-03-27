@@ -3,6 +3,7 @@ package com.example.reservation_system.service;
 import com.example.reservation_system.entity.CustomerProfile;
 import com.example.reservation_system.repository.CustomerProfileRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,6 +18,10 @@ private CustomerProfileRepository customerProfileRepository;
 
     public Optional<CustomerProfile> findById(int id){
         return customerProfileRepository.findById(id);
+    }
+
+    public void addNew(CustomerProfile customerProfile) {
+        customerProfileRepository.save(customerProfile);
     }
 }
 
