@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class HostProfile {
 
     @Id
-    private Integer hostProfileId;
+    private int hostProfileId;
 
     @MapsId
     @OneToOne

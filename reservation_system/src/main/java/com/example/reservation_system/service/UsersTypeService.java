@@ -18,4 +18,8 @@ public class UsersTypeService {
     public List<UsersType> findAllExceptAdmin(){
         return usersTypeRepository.findAllExcludingName("ADMIN");
     }
+
+    public List<UsersType> findAll(){
+        return usersTypeRepository.findAll();
+    }
 }

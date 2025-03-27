@@ -46,10 +46,10 @@ public class UsersController {
     @PostMapping("/register")
     public String register(Users user, Model model) {
 
-        Optional<Users> optionalUser = usersService.findUserById(user.getUserId());
+        Optional<Users> optionalUser = usersService.findUserByEmail(user.getEmail());
         if (optionalUser.isPresent()) {
             model.addAttribute("error", "User is already registered");
-            model.addAttribute("user", user);
+            model.addAttribute("user", new Users());
             model.addAttribute("usersTypes", usersTypeService.findAllExceptAdmin());
             return "register";
         }
