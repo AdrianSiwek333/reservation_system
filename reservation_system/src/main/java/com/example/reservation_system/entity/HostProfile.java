@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 public class HostProfile {
 
     @Id
-    private Integer hostProfileId;
+    private int hostProfileId;
 
     @MapsId
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "host_profile_id")
     private Users userId;
 
     private String firstName;
@@ -26,6 +26,11 @@ public class HostProfile {
     private String companyName;
 
     public HostProfile() {
+    }
+
+    public HostProfile(Users userId) {
+        this.userId = userId;
+        this.hostProfileId = userId.getUserId();
     }
 
     public HostProfile(Integer hostProfileId, Users userId, String firstName, String lastName, Country country, String phoneNumber, String bankAccount, String companyName) {

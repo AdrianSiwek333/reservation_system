@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 public class CustomerProfile {
 
     @Id
-    private int tempId;
+    private int customerProfileId;
 
     @MapsId
     @OneToOne
     @JoinColumn(name = "customer_profile_id")
-    private Users customerProfileId;
+    private Users userId;
 
     private String firstName;
     private String lastName;
@@ -25,29 +25,34 @@ public class CustomerProfile {
     public CustomerProfile() {
     }
 
+    public CustomerProfile(Users userId) {
+        this.userId = userId;
+        this.customerProfileId = userId.getUserId();
+    }
+
     public CustomerProfile(int tempId, Users customerProfileId, String firstName, String lastName, String phoneNumber, Country country) {
-        this.tempId = tempId;
-        this.customerProfileId = customerProfileId;
+        this.customerProfileId = tempId;
+        this.userId = customerProfileId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.country = country;
     }
 
-    public int getTempId() {
-        return tempId;
-    }
-
-    public void setTempId(int customerProfileId) {
-        this.tempId = customerProfileId;
-    }
-
-    public Users getCustomerProfileId() {
+        public int getCustomerProfileId() {
         return customerProfileId;
     }
 
-    public void setCustomerProfileId(Users userId) {
-        this.customerProfileId = userId;
+    public void setCustomerProfileId(int customerProfileId) {
+        this.customerProfileId = customerProfileId;
+    }
+
+    public Users getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Users userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -85,8 +90,8 @@ public class CustomerProfile {
     @Override
     public String toString() {
         return "CustomerProfile{" +
-                "customerProfileId=" + tempId +
-                ", userId=" + customerProfileId +
+                "customerProfileId=" + customerProfileId +
+                ", userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
