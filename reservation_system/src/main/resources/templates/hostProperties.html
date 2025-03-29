@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista nieruchomości</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Lista nieruchomości</h2>
+
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nazwa</th>
+      <th>Adres</th>
+      <th>Miasto</th>
+      <th>Obszar</th>
+      <th>Opis</th>
+      <th>Aktywna</th>
+      <th>Kraj</th>
+      <th>Typ</th>
+      <th>Gospodarz</th>
+      <th>Edytuj</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="property : ${properties}">
+      <td th:text="${property.propertyId}"></td>
+      <td th:text="${property.propertyName}"></td>
+      <td th:text="${property.address}"></td>
+      <td th:text="${property.city}"></td>
+      <td th:text="${property.area}"></td>
+      <td th:text="${property.description}"></td>
+      <td>
+        <span th:if="${property.active}" class="text-success">Tak</span>
+        <span th:unless="${property.active}" class="text-danger">Nie</span>
+      </td>
+      <td th:text="${property.country?.getCountryName()}"></td>
+      <td th:text="${property.propertyTypeId?.getTypeName()}"></td>
+      <td th:text="${property.hostId?.getCompanyName()}"></td>
+      <td>
+        <a th:href="@{/properties/edit/{id}(id=${property.propertyId})}">Edytuj</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <a href="/" class="btn btn-primary">Powrót do strony głównej</a>
+  <a th:href="@{/properties/add}" class="btn btn-primary">Add new</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
