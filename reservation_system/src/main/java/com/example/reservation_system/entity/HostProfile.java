@@ -2,6 +2,9 @@ package com.example.reservation_system.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "host_profile")
 public class HostProfile {
@@ -25,12 +28,16 @@ public class HostProfile {
     private String bankAccount;
     private String companyName;
 
+    @OneToMany(mappedBy = "hostId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Property> properties;
+
     public HostProfile() {
     }
 
     public HostProfile(Users userId) {
         this.userId = userId;
         this.hostProfileId = userId.getUserId();
+        this.properties = new ArrayList<>();
     }
 
     public HostProfile(Integer hostProfileId, Users userId, String firstName, String lastName, Country country, String phoneNumber, String bankAccount, String companyName) {
@@ -42,6 +49,21 @@ public class HostProfile {
         this.phoneNumber = phoneNumber;
         this.bankAccount = bankAccount;
         this.companyName = companyName;
+        if(this.properties == null) {
+            this.properties = new ArrayList<>();
+        }
+    }
+
+    public HostProfile(int hostProfileId, Users userId, String firstName, String lastName, Country country, String phoneNumber, String bankAccount, String companyName, List<Property> properties) {
+        this.hostProfileId = hostProfileId;
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.country = country;
+        this.phoneNumber = phoneNumber;
+        this.bankAccount = bankAccount;
+        this.companyName = companyName;
+        this.properties = properties;
     }
 
     public Integer getHostProfileId() {
@@ -106,6 +128,18 @@ public class HostProfile {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public void setHostProfileId(int hostProfileId) {
+        this.hostProfileId = hostProfileId;
+    }
+
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties != null ? properties : new ArrayList<>();
     }
 
     @Override
