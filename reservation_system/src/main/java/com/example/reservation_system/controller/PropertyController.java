@@ -2,10 +2,13 @@ package com.example.reservation_system.controller;
 
 import com.example.reservation_system.entity.HostProfile;
 import com.example.reservation_system.entity.Property;
+import com.example.reservation_system.entity.PropertyImages;
 import com.example.reservation_system.entity.Users;
 import com.example.reservation_system.service.*;
+import com.example.reservation_system.storage.StorageException;
+import com.example.reservation_system.storage.StorageProperties;
+import com.example.reservation_system.storage.StorageService;
 import jakarta.validation.Valid;
-import org.apache.catalina.Host;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,14 +36,21 @@ public class PropertyController {
     private final HostProfileService hostProfileService;
     private final PropertyTypeService propertyTypeService;
     private final CountryService countryService;
+    private final StorageService storageService;
+    private final Path rootLocation;
 
     public PropertyController(UsersService usersService, PropertyService propertyService,
-                              HostProfileService hostProfileService, PropertyTypeService propertyTypeService, CountryService countryService) {
+                              HostProfileService hostProfileService, PropertyTypeService propertyTypeService,
+                              CountryService countryService,
+                              StorageService storageService,
+                              StorageProperties storageProperties) {
         this.usersService = usersService;
         this.propertyService = propertyService;
         this.hostProfileService = hostProfileService;
         this.propertyTypeService = propertyTypeService;
         this.countryService = countryService;
+        this.storageService = storageService;
+        this.rootLocation = Paths.get(storageProperties.getLocation());
     }
 
     protected HostProfile getHostProfileIfHost(){
@@ -110,7 +127,10 @@ public class PropertyController {
 
     @PostMapping("/update")
     public String updateProperty(@Valid @ModelAttribute("property") Property property,
-                                 BindingResult bindingResult, Model model) {
+                                 BindingResult bindingResult,
+                                 @RequestParam("imageFiles") MultipartFile image,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model) {
 
         HostProfile hostProfile = getHostProfileIfHost();
         if(hostProfile == null){
@@ -125,6 +145,27 @@ public class PropertyController {
             return "property";
         }
 
+        String uploadDir = "photos/property/" + property.getPropertyId();
+        Path propertyDirectory = rootLocation.resolve(uploadDir);
+        if(!Files.exists(propertyDirectory)){
+            try{
+                Files.createDirectories(propertyDirectory);
+            }catch(IOException e){
+                throw new StorageException("Failed to create directory for property");
+            }
+        }
+
+        List<PropertyImages> propertyImages = propertyService.findById(property.getPropertyId())
+                .map(Property::getImages)
+                .orElse(new ArrayList<>());
+        property.setImages(propertyImages);
+
+        property.setImages(propertyImages);
+
+        storageService.store(image, uploadDir);
+        PropertyImages newImage = new PropertyImages();
+        newImage.setImageUrl(propertyDirectory.toString() + "\\" + image.getOriginalFilename());
+        property.addImage(newImage);
         property.setHostId(hostProfile);
         propertyService.update(property);
         return "redirect:/properties/yourProperties";

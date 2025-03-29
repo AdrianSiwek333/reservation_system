@@ -11,6 +11,7 @@ public class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "property_id")
     private int propertyId;
 
     private String propertyName;
@@ -32,8 +33,9 @@ public class Property {
     @JoinColumn(name = "host_id")
     private HostProfile hostId;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PropertyImages> images = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "property_id")
+    private List<PropertyImages> images;
 
     public int getPropertyId() {
         return propertyId;
@@ -168,5 +170,16 @@ public class Property {
                 ", hostId=" + hostId +
                 ", images=" + images +
                 '}';
+    }
+
+    public void addImage(PropertyImages image) {
+        if(images == null){
+            images = new ArrayList<>();
+        }
+        images.add(image);
+    }
+
+    public void removeImage(PropertyImages image) {
+        this.images.remove(image);
     }
 }

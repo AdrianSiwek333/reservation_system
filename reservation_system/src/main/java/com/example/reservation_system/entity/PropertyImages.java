@@ -12,7 +12,31 @@ public class PropertyImages {
 
     private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "property_id")
-    private Property property;
+    public PropertyImages(int propertyImageId, String imageUrl) {
+        this.propertyImageId = propertyImageId;
+        this.imageUrl = imageUrl;
+    }
+
+    public PropertyImages(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public PropertyImages() {}
+
+    public int getPropertyImageId() {
+        return propertyImageId;
+    }
+
+    public void setPropertyImageId(int propertyImageId) {
+        this.propertyImageId = propertyImageId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
