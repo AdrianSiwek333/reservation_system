@@ -55,38 +55,20 @@
 <div class="container mt-5">
     <h2 class="text-center">Featured Rooms</h2>
     <div class="row">
-        <div class="col-md-4">
+        <div th:each="property : ${featuredProperties}" class="col-md-4">
             <div class="card">
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Room">
+                <img th:src="${property.images.size() > 0 ? property.images[0].imageUrl : 'https://via.placeholder.com/300'}"
+                     class="card-img-top" alt="Room">
                 <div class="card-body">
-                    <h5 class="card-title">Luxury Suite</h5>
-                    <p class="card-text">A beautiful suite with ocean view.</p>
-                    <a href="#" class="btn btn-primary">Book Now</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Room">
-                <div class="card-body">
-                    <h5 class="card-title">Cozy Apartment</h5>
-                    <p class="card-text">A comfortable place for your stay.</p>
-                    <a href="#" class="btn btn-primary">Book Now</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="Room">
-                <div class="card-body">
-                    <h5 class="card-title">Budget Room</h5>
-                    <p class="card-text">An affordable option for travelers.</p>
-                    <a href="#" class="btn btn-primary">Book Now</a>
+                    <h5 class="card-title" th:text="${property.propertyName}"></h5>
+                    <p class="card-text" th:text="${property.description}"></p>
+                    <a th:href="@{/properties/view/{id}(id=${property.propertyId})}" class="btn btn-primary">Book Now</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <footer class="bg-light text-center py-3 mt-5">
     <p>&copy; 2025 RoomRental. All Rights Reserved.</p>

@@ -29,7 +29,7 @@ public class SecurityConfig {
     }
 
     private final String[] publicUrl = {"/",
-    "/register", "/register/**"};
+    "/register", "/register/**", "/upload-dir/photos/property/**", "/properties/view/**" };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

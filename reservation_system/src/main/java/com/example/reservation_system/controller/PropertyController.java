@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/properties")
@@ -164,10 +165,21 @@ public class PropertyController {
 
         storageService.store(image, uploadDir);
         PropertyImages newImage = new PropertyImages();
-        newImage.setImageUrl(propertyDirectory.toString() + "\\" + image.getOriginalFilename());
+        newImage.setImageUrl(propertyDirectory.toString().replace('\\', '/') + "/" + image.getOriginalFilename());
         property.addImage(newImage);
         property.setHostId(hostProfile);
         propertyService.update(property);
         return "redirect:/properties/yourProperties";
+    }
+
+    @GetMapping("/view/{id}")
+    public String showProperty(@PathVariable("id") int id, Model model) {
+
+        Optional<Property> property = propertyService.findById(id);
+        if(!property.isPresent()){
+            return "redirect:/siteDoesntExist";
+        }
+        model.addAttribute("property", property.get());
+        return "propertyDetails";
     }
 }

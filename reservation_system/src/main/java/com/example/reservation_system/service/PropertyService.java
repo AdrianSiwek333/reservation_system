@@ -34,4 +34,8 @@ public class PropertyService {
     public Optional<Property> findById(int id){
         return propertyRepository.findById(id);
     }
+
+    public List<Property> findRandom6Properties(){
+        return propertyRepository.findRandom6Properties();
+    }
 }
