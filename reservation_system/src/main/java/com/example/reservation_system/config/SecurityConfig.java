@@ -29,7 +29,7 @@ public class SecurityConfig {
     }
 
     private final String[] publicUrl = {"/",
-    "/register", "/register/**", "/upload-dir/photos/property/**", "/properties/view/**" };
+    "/register", "/register/**", "/upload-dir/photos/property/**", "/properties/view/**", "/api/**" };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,7 +45,8 @@ public class SecurityConfig {
                             logout.logoutSuccessUrl("/");
                     })
                 .cors(Customizer.withDefaults())
-                .csrf(Customizer.withDefaults())
+                /*.csrf(Customizer.withDefaults())*/
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authenticationManager(authenticationManager());
 
         return http.build();
