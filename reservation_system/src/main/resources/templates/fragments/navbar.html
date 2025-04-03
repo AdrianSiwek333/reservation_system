@@ -11,7 +11,7 @@
                         <a sec:authorize="hasAuthority('HOST')" class="nav-link" th:href="@{/properties/yourProperties}">Your Properties</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/properties/view/browse}">Properties</a></li>
                     <li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">Login</a></li>
                     <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
                         <button type="submit" class="btn btn-link nav-link">Logout</button>

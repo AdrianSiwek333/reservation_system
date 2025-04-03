@@ -9,6 +9,10 @@ import com.example.reservation_system.storage.StorageException;
 import com.example.reservation_system.storage.StorageProperties;
 import com.example.reservation_system.storage.StorageService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -181,5 +185,25 @@ public class PropertyController {
         }
         model.addAttribute("property", property.get());
         return "propertyDetails";
+    }
+
+    @GetMapping("/view/browse")
+    public String getProperties(@RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value = "query", required = false) String query,
+                                @RequestParam(value = "minPrice", required = false) Integer minPrice,
+                                @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
+                                Model model) {
+        Pageable pageable = PageRequest.of(page - 1, 9, Sort.by("propertyName").ascending());
+
+        Page<Property> propertiesPage = propertyService.getProperties(query, minPrice, maxPrice, pageable);
+
+        model.addAttribute("properties", propertiesPage.getContent());
+        model.addAttribute("totalPages", propertiesPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("query", query);
+        model.addAttribute("minPrice", minPrice);
+        model.addAttribute("maxPrice", maxPrice);
+
+        return "propertySearchPage";
     }
 }

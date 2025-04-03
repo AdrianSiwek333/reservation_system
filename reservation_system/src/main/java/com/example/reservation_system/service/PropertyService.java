@@ -5,6 +5,8 @@ import com.example.reservation_system.entity.Property;
 import com.example.reservation_system.repository.HostProfileRepository;
 import com.example.reservation_system.repository.PropertyRepository;
 import com.example.reservation_system.repository.UsersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -44,5 +46,17 @@ public class PropertyService {
     public int calculatePrice(int PropertyId, LocalDate startDate, LocalDate endDate){
         int between = (int)ChronoUnit.DAYS.between(startDate, endDate);
         return propertyRepository.calculatePrice(PropertyId, between);
+    }
+
+    public Page<Property> getProperties(String query, Integer minPrice, Integer maxPrice, Pageable pageable) {
+        if (query != null && minPrice != null && maxPrice != null) {
+            return propertyRepository.findByQueryAndPriceRange(query, minPrice, maxPrice, pageable);
+        } else if (query != null) {
+            return propertyRepository.findByQuery(query, pageable);
+        } else if (minPrice != null && maxPrice != null) {
+            return propertyRepository.findByPriceRange(minPrice, maxPrice, pageable);
+        } else {
+            return propertyRepository.findAll(pageable);
+        }
     }
 }
