@@ -13,13 +13,31 @@
 <header class="bg-primary text-white text-center py-5">
     <h1>Find Your Perfect Stay</h1>
     <p>Book the best rooms at the best prices</p>
-    <form class="d-flex justify-content-center">
-        <input type="text" class="form-control w-25 me-2" placeholder="Search city or hotel...">
-        <input type="date" class="form-control w-25 me-2">
-        <input type="date" class="form-control w-25 me-2">
-        <button class="btn btn-warning">Search</button>
+    <form class="container mt-3" th:action="@{/properties/view/browse}" method="get">
+        <div class="row gy-2 gx-3 justify-content-center">
+            <div class="col-md-4 col-lg-4">
+                <input type="text" name="query" class="form-control" placeholder="Search city or hotel..." th:value="${query}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="date" name="startDate" class="form-control" th:value="${startDate}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="date" name="endDate" class="form-control" th:value="${endDate}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
+            </div>
+            <div class="col-md-12 col-lg-2 text-center">
+                <button type="submit" class="btn btn-warning w-100">Search</button>
+            </div>
+        </div>
     </form>
 </header>
+
+
 
 <div class="container mt-5">
     <h2 class="text-center">Featured Rooms</h2>

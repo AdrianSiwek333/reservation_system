@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -169,7 +170,7 @@ public class PropertyController {
 
         storageService.store(image, uploadDir);
         PropertyImages newImage = new PropertyImages();
-        newImage.setImageUrl(propertyDirectory.toString().replace('\\', '/') + "/" + image.getOriginalFilename());
+        newImage.setImageUrl('/' + propertyDirectory.toString().replace('\\', '/') + "/" + image.getOriginalFilename());
         property.addImage(newImage);
         property.setHostId(hostProfile);
         propertyService.update(property);
@@ -192,6 +193,8 @@ public class PropertyController {
                                 @RequestParam(value = "query", required = false) String query,
                                 @RequestParam(value = "minPrice", required = false) Integer minPrice,
                                 @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
+                                @RequestParam(value = "startDate", required = false) LocalDate startDate,
+                                @RequestParam(value = "endDate", required = false) LocalDate endDate,
                                 Model model) {
         Pageable pageable = PageRequest.of(page - 1, 9, Sort.by("propertyName").ascending());
 

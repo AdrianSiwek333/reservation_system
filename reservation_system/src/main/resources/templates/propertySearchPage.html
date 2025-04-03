@@ -9,24 +9,34 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="container mt-5">
-    <h2 class="text-center">Available Properties</h2>
-
-    <!-- Search & Filter Form -->
-    <form class="row g-3 mb-4" th:action="@{/properties/view/browse}" method="get">
-        <div class="col-md-3">
-            <input type="text" name="query" class="form-control" placeholder="Search by name or location" th:value="${query}">
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
-        </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
+<header class="bg-primary text-white text-center py-5">
+    <h1>Find Your Perfect Stay</h1>
+    <p>Book the best rooms at the best prices</p>
+    <form class="container mt-3" th:action="@{/properties/view/browse}" method="get">
+        <div class="row gy-2 gx-3 justify-content-center">
+            <div class="col-md-4 col-lg-4">
+                <input type="text" name="query" class="form-control" placeholder="Search city or hotel..." th:value="${query}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="date" name="startDate" class="form-control" th:value="${startDate}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="date" name="endDate" class="form-control" th:value="${endDate}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
+            </div>
+            <div class="col-md-12 col-lg-2 text-center">
+                <button type="submit" class="btn btn-warning w-100">Search</button>
+            </div>
         </div>
     </form>
+</header>
+
+<div class="container mt-5">
 
     <div class="row">
         <div th:each="property : ${properties}" class="col-md-4">
@@ -45,19 +55,19 @@
     <nav th:if="${totalPages > 1}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/properties(page=1, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">First</a>
+                <a class="page-link" th:href="@{/properties/view/browse(page=1, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">First</a>
             </li>
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/properties(page=${currentPage - 1}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">Previous</a>
+                <a class="page-link" th:href="@{/properties/view/browse(page=${currentPage - 1}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">Previous</a>
             </li>
             <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}" th:classappend="${pageNum == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/properties(page=${pageNum}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}" th:text="${pageNum}"></a>
+                <a class="page-link" th:href="@{/properties/view/browse(page=${pageNum}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}" th:text="${pageNum}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/properties(page=${currentPage + 1}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">Next</a>
+                <a class="page-link" th:href="@{/properties/view/browse(page=${currentPage + 1}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">Next</a>
             </li>
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/properties(page=${totalPages}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">Last</a>
+                <a class="page-link" th:href="@{/properties/view/browse(page=${totalPages}, query=${query}, minPrice=${minPrice}, maxPrice=${maxPrice})}">Last</a>
             </li>
         </ul>
     </nav>
