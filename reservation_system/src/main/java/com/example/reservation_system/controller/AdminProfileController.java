@@ -4,7 +4,6 @@ import com.example.reservation_system.entity.AdminProfile;
 
 import com.example.reservation_system.entity.Users;
 import com.example.reservation_system.service.AdminProfileService;
-import com.example.reservation_system.service.CountryService;
 import com.example.reservation_system.service.UsersService;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -24,13 +23,10 @@ public class AdminProfileController {
 
     private final UsersService usersService;
     private final AdminProfileService adminProfileService;
-    private final CountryService countryService;
 
-    public AdminProfileController(UsersService usersService, AdminProfileService adminProfileService,
-                                  CountryService countryService) {
+    public AdminProfileController(UsersService usersService, AdminProfileService adminProfileService) {
         this.usersService = usersService;
         this.adminProfileService = adminProfileService;
-        this.countryService = countryService;
     }
 
     @RequestMapping("/")

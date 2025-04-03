@@ -15,19 +15,31 @@
     <form class="container mt-3" th:action="@{/properties/view/browse}" method="get">
         <div class="row gy-2 gx-3 justify-content-center">
             <div class="col-md-4 col-lg-4">
-                <input type="text" name="query" class="form-control" placeholder="Search city or hotel..." th:value="${query}">
+                <label>
+                    <input type="text" name="query" class="form-control" placeholder="Search city or hotel..." th:value="${query}">
+                </label>
             </div>
             <div class="col-md-3 col-lg-2">
-                <input type="date" name="startDate" class="form-control" th:value="${startDate}">
+                <label>
+                    <!--/*@thymesVar id="startDate" type=""*/-->
+                    <input type="date" name="startDate" class="form-control" th:value="${startDate}">
+                </label>
             </div>
             <div class="col-md-3 col-lg-2">
-                <input type="date" name="endDate" class="form-control" th:value="${endDate}">
+                <label>
+                    <!--/*@thymesVar id="endDate" type="java.time.LocalDate"*/-->
+                    <input type="date" name="endDate" class="form-control" th:value="${endDate}">
+                </label>
             </div>
             <div class="col-md-3 col-lg-2">
-                <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
+                <label>
+                    <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
+                </label>
             </div>
             <div class="col-md-3 col-lg-2">
-                <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
+                <label>
+                    <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
+                </label>
             </div>
             <div class="col-md-12 col-lg-2 text-center">
                 <button type="submit" class="btn btn-warning w-100">Search</button>

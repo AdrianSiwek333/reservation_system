@@ -5,16 +5,13 @@ import com.example.reservation_system.repository.UsersRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class UsersService {
 
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomerProfileService customerProfileService;
     private final HostProfileService hostProfileService;

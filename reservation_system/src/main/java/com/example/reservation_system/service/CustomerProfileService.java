@@ -3,14 +3,13 @@ package com.example.reservation_system.service;
 import com.example.reservation_system.entity.CustomerProfile;
 import com.example.reservation_system.repository.CustomerProfileRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 public class CustomerProfileService {
 
-private CustomerProfileRepository customerProfileRepository;
+private final CustomerProfileRepository customerProfileRepository;
 
     public CustomerProfileService(CustomerProfileRepository customerProfileRepository) {
         this.customerProfileRepository = customerProfileRepository;

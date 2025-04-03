@@ -30,13 +30,13 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(int reservationId, String status, LocalDate reservationCreationDate, LocalDate reservationStartDate, LocalDate reservationEndDate, int prica, Users customerId, Property propertyId) {
+    public Reservation(int reservationId, String status, LocalDate reservationCreationDate, LocalDate reservationStartDate, LocalDate reservationEndDate, int price, Users customerId, Property propertyId) {
         this.reservationId = reservationId;
         this.status = status;
         this.reservationCreationDate = reservationCreationDate;
         this.reservationStartDate = reservationStartDate;
         this.reservationEndDate = reservationEndDate;
-        this.price = prica;
+        this.price = price;
         this.customerId = customerId;
         this.propertyId = propertyId;
     }
@@ -85,8 +85,8 @@ public class Reservation {
         return price;
     }
 
-    public void setPrice(int prica) {
-        this.price = prica;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public Users getCustomerId() {

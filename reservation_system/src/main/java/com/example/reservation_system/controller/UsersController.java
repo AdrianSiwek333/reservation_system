@@ -1,17 +1,13 @@
 package com.example.reservation_system.controller;
 
-import com.example.reservation_system.entity.CustomerProfile;
 import com.example.reservation_system.entity.Users;
 import com.example.reservation_system.entity.UsersType;
-import com.example.reservation_system.service.CustomerProfileService;
 import com.example.reservation_system.service.UsersService;
 import com.example.reservation_system.service.UsersTypeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +15,11 @@ import java.util.Optional;
 @Controller
 public class UsersController {
 
-    private UsersService usersService;
-    private CustomerProfileService customerProfileService;
-    private UsersTypeService usersTypeService;
+    private final UsersService usersService;
+    private final UsersTypeService usersTypeService;
 
-    public UsersController(UsersService usersService, CustomerProfileService customerProfileService,
-                           UsersTypeService usersTypeService) {
+    public UsersController(UsersService usersService, UsersTypeService usersTypeService) {
         this.usersService = usersService;
-        this.customerProfileService = customerProfileService;
         this.usersTypeService = usersTypeService;
     }
 

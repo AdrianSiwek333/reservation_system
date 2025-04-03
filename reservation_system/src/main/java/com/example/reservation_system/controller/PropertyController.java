@@ -181,7 +181,7 @@ public class PropertyController {
     public String showProperty(@PathVariable("id") int id, Model model) {
 
         Optional<Property> property = propertyService.findById(id);
-        if(!property.isPresent()){
+        if(property.isEmpty()){
             return "redirect:/siteDoesntExist";
         }
         model.addAttribute("property", property.get());

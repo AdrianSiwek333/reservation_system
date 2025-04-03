@@ -2,7 +2,6 @@ package com.example.reservation_system.service;
 
 import com.example.reservation_system.entity.HostProfile;
 import com.example.reservation_system.repository.HostProfileRepository;
-import com.example.reservation_system.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,11 +10,9 @@ import java.util.Optional;
 public class HostProfileService {
 
     private final HostProfileRepository hostProfileRepository;
-    private final UsersRepository usersRepository;
 
-    public HostProfileService(HostProfileRepository hostProfileRepository, UsersRepository usersRepository) {
+    public HostProfileService(HostProfileRepository hostProfileRepository) {
         this.hostProfileRepository = hostProfileRepository;
-        this.usersRepository = usersRepository;
     }
 
     public void update(HostProfile hostProfile) {

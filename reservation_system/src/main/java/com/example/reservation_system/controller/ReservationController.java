@@ -3,7 +3,6 @@ package com.example.reservation_system.controller;
 import com.example.reservation_system.entity.Property;
 import com.example.reservation_system.entity.Reservation;
 import com.example.reservation_system.entity.Users;
-import com.example.reservation_system.service.CustomerProfileService;
 import com.example.reservation_system.service.PropertyService;
 import com.example.reservation_system.service.ReservationService;
 import com.example.reservation_system.service.UsersService;
@@ -26,13 +25,11 @@ import java.time.LocalDate;
 public class ReservationController {
 
     private final ReservationService reservationService;
-    private final CustomerProfileService customerProfileService;
     private final PropertyService propertyService;
     private final UsersService usersService;
 
-    public ReservationController(ReservationService reservationService, CustomerProfileService customerProfileService, PropertyService propertyService, UsersService usersService) {
+    public ReservationController(ReservationService reservationService, PropertyService propertyService, UsersService usersService) {
         this.reservationService = reservationService;
-        this.customerProfileService = customerProfileService;
         this.propertyService = propertyService;
         this.usersService = usersService;
     }

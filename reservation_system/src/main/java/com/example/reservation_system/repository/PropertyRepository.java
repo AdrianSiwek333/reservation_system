@@ -12,10 +12,10 @@ import java.util.List;
 
 public interface PropertyRepository extends JpaRepository<Property, Integer> {
 
-    public List<Property> findByHostId(HostProfile host);
+    List<Property> findByHostId(HostProfile host);
 
     @Query(value = "SELECT * from property ORDER BY rand() limit 6", nativeQuery = true)
-    public List<Property> findRandom6Properties();
+    List<Property> findRandom6Properties();
 
     @Query("SELECT (p.dayPrice * :days) from Property p " +
             "where p.propertyId = :propertyId")

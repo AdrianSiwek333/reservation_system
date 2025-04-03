@@ -6,7 +6,6 @@ import com.example.reservation_system.service.CustomerProfileService;
 import com.example.reservation_system.service.UsersService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
@@ -15,8 +14,8 @@ import java.util.Optional;
 @RequestMapping("/restUser")
 public class UserRestController {
 
-    private UsersService usersService;
-    private CustomerProfileService customerProfileService;
+    private final UsersService usersService;
+    private final CustomerProfileService customerProfileService;
 
     public UserRestController(UsersService usersService, CustomerProfileService customerProfileService) {
         this.usersService = usersService;
@@ -39,9 +38,6 @@ public class UserRestController {
     @GetMapping("/customerProfile")
     public CustomerProfile customerProfile() {
         Optional<CustomerProfile> customerProfile = customerProfileService.findById(1);
-        if(customerProfile.isPresent()) {
-            return customerProfile.get();
-        }
-        return null;
+        return customerProfile.orElse(null);
     }
 }

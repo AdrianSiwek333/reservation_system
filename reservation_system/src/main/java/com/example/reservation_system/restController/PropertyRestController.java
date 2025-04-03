@@ -23,8 +23,6 @@ public class PropertyRestController {
                                                              @RequestParam String year) {
         List<LocalDate> availableDates = reservationService.getAvailableDatesForProperty(propertyId, Integer.parseInt(year),
                 Integer.parseInt(month));
-        /*List<LocalDate> availableDates = reservationService.getAvailableDatesForProperty(propertyId, Integer.parseInt(year),
-                Integer.parseInt(month));*/
         return ResponseEntity.ok(availableDates);
     }
 
