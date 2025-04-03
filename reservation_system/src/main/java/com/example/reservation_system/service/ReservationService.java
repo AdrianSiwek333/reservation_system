@@ -1,5 +1,6 @@
 package com.example.reservation_system.service;
 
+import com.example.reservation_system.entity.Property;
 import com.example.reservation_system.entity.Reservation;
 import com.example.reservation_system.repository.PropertyRepository;
 import com.example.reservation_system.repository.ReservationRepository;
@@ -26,7 +27,7 @@ public class ReservationService {
     public List<LocalDate> getAvailableDatesForProperty(int propertyId, int year, int month) {
         List<Reservation> reservations = reservationRepository.findByPropertyId(propertyRepository.findById(propertyId).get());
         Set<LocalDate> bookedDates = reservations.stream()
-                .flatMap(reservation -> reservation.getDatesBeetween().stream())
+                .flatMap(reservation -> reservation.getDatesBetween().stream())
                 .collect(Collectors.toSet());
 
         LocalDate today = LocalDate.of(year, month, 1);
@@ -38,5 +39,14 @@ public class ReservationService {
             }
         }
         return availableDates;
+    }
+
+    public Boolean isAvailable(Property property, LocalDate startDate, LocalDate endDate) {
+        return !reservationRepository.existsByPropertyIdAndDateRange(property.getPropertyId(),
+                startDate, endDate);
+    }
+
+    public void update(Reservation reservation) {
+        reservationRepository.save(reservation);
     }
 }

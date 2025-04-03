@@ -7,6 +7,8 @@ import com.example.reservation_system.repository.PropertyRepository;
 import com.example.reservation_system.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +39,10 @@ public class PropertyService {
 
     public List<Property> findRandom6Properties(){
         return propertyRepository.findRandom6Properties();
+    }
+
+    public int calculatePrice(int PropertyId, LocalDate startDate, LocalDate endDate){
+        int between = (int)ChronoUnit.DAYS.between(startDate, endDate);
+        return propertyRepository.calculatePrice(PropertyId, between);
     }
 }

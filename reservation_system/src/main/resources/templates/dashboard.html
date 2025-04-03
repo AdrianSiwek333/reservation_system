@@ -31,6 +31,7 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${property.propertyName}"></h5>
                     <p class="card-text" th:text="${property.description}"></p>
+                    <p class="card-text" th:text="'Price for night: ' + ${property.getDayPrice()}"></p>
                     <a th:href="@{/properties/view/{id}(id=${property.propertyId})}" class="btn btn-primary">Book Now</a>
                 </div>
             </div>

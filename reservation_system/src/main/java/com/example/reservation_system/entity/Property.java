@@ -20,6 +20,7 @@ public class Property {
     private String area;
     private String description;
     private boolean isActive;
+    private int dayPrice;
 
     @ManyToOne
     @JoinColumn(name = "country")
@@ -109,6 +110,14 @@ public class Property {
         this.propertyTypeId = propertyTypeId;
     }
 
+    public int getDayPrice() {
+        return dayPrice;
+    }
+
+    public void setDayPrice(int dayPrice) {
+        this.dayPrice = dayPrice;
+    }
+
     public List<PropertyImages> getImages() {
         return images;
     }
@@ -127,7 +136,7 @@ public class Property {
 
     public Property(){}
 
-    public Property(int propertyId, String propertyName, String address, String city, String area, String description, boolean isActive, Country country, PropertyType propertyTypeId, HostProfile hostId, List<PropertyImages> images) {
+    public Property(int propertyId, String propertyName, String address, String city, String area, String description, boolean isActive, Country country, PropertyType propertyTypeId, HostProfile hostId, List<PropertyImages> images, int dayPrice) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.address = address;
@@ -139,9 +148,10 @@ public class Property {
         this.propertyTypeId = propertyTypeId;
         this.hostId = hostId;
         this.images = images;
+        this.dayPrice = dayPrice;
     }
 
-    public Property(int propertyId, String propertyName, String address, String city, String area, String description, boolean isActive, Country country, PropertyType propertyTypeId, HostProfile hostId) {
+    public Property(int propertyId, String propertyName, String address, String city, String area, String description, boolean isActive, Country country, PropertyType propertyTypeId, HostProfile hostId, int dayPrice) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.address = address;
@@ -153,6 +163,7 @@ public class Property {
         this.propertyTypeId = propertyTypeId;
         this.hostId = hostId;
         this.images = new ArrayList<>();
+        this.dayPrice = dayPrice;
     }
 
     @Override
@@ -165,6 +176,7 @@ public class Property {
                 ", area='" + area + '\'' +
                 ", description='" + description + '\'' +
                 ", isActive=" + isActive +
+                ", dayPrice=" + dayPrice +
                 ", country=" + country +
                 ", propertyTypeId=" + propertyTypeId +
                 ", hostId=" + hostId +

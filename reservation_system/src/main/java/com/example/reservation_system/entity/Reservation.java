@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -23,7 +22,7 @@ public class Reservation {
 
     @OneToOne
     @JoinColumn(name = "customer_id")
-    private CustomerProfile customerId;
+    private Users customerId;
 
     @ManyToOne
     @JoinColumn(name = "property_id")
@@ -31,7 +30,7 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(int reservationId, String status, LocalDate reservationCreationDate, LocalDate reservationStartDate, LocalDate reservationEndDate, int prica, CustomerProfile customerId, Property propertyId) {
+    public Reservation(int reservationId, String status, LocalDate reservationCreationDate, LocalDate reservationStartDate, LocalDate reservationEndDate, int prica, Users customerId, Property propertyId) {
         this.reservationId = reservationId;
         this.status = status;
         this.reservationCreationDate = reservationCreationDate;
@@ -90,11 +89,11 @@ public class Reservation {
         this.price = prica;
     }
 
-    public CustomerProfile getCustomerId() {
+    public Users getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(CustomerProfile customerId) {
+    public void setCustomerId(Users customerId) {
         this.customerId = customerId;
     }
 
@@ -114,13 +113,13 @@ public class Reservation {
                 ", reservationCreationDate=" + reservationCreationDate +
                 ", reservationStartDate=" + reservationStartDate +
                 ", reservationEndDate=" + reservationEndDate +
-                ", prica=" + price +
+                ", price=" + price +
                 ", customerId=" + customerId +
                 ", propertyId=" + propertyId +
                 '}';
     }
 
-    public List<LocalDate> getDatesBeetween() {
+    public List<LocalDate> getDatesBetween() {
         List<LocalDate> dates = new ArrayList<>();
         LocalDate date = reservationStartDate;
 
@@ -130,5 +129,10 @@ public class Reservation {
         }
 
         return dates;
+    }
+
+    public boolean isValid(){
+        return reservationStartDate != null && reservationEndDate != null
+                && reservationEndDate.isAfter(reservationStartDate);
     }
 }

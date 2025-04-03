@@ -9,6 +9,7 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
+<div class="container mt-5">
   <h2 class="mb-4">Add New Property</h2>
 
   <form th:action="@{/properties/update}" th:object="${property}" method="post" enctype="multipart/form-data">
@@ -32,6 +33,11 @@
     <div class="mb-3">
       <label for="area" class="form-label">Area</label>
       <input type="text" th:field="*{area}" class="form-control" id="area" name="area">
+    </div>
+
+    <div class="mb-3">
+      <label for="area" class="form-label">Area</label>
+      <input type="number" th:field="*{dayPrice}" class="form-control" id="dayPrice" name="area">
     </div>
 
     <div class="mb-3">
