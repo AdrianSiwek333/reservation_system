@@ -6,7 +6,9 @@ import com.example.reservation_system.service.UsersService;
 import com.example.reservation_system.service.UsersTypeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -37,12 +39,12 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public String register(Users user, Model model) {
+    public String register(@ModelAttribute("user") Users user, BindingResult result, Model model) {
 
         Optional<Users> optionalUser = usersService.findUserByEmail(user.getEmail());
         if (optionalUser.isPresent()) {
-            model.addAttribute("error", "User is already registered");
-            model.addAttribute("user", new Users());
+            result.rejectValue("email", "email.exists", "Account with this email already exists");
+            model.addAttribute("user", user);
             model.addAttribute("usersTypes", usersTypeService.findAllExceptAdmin());
             return "register";
         }

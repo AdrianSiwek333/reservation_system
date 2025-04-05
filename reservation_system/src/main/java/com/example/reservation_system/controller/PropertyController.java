@@ -134,7 +134,7 @@ public class PropertyController {
     @PostMapping("/update")
     public String updateProperty(@Valid @ModelAttribute("property") Property property,
                                  BindingResult bindingResult,
-                                 @RequestParam("imageFiles") MultipartFile image,
+                                 @RequestParam("imageFiles") MultipartFile[] imageFiles,
                                  RedirectAttributes redirectAttributes,
                                  Model model) {
 
@@ -168,10 +168,15 @@ public class PropertyController {
 
         property.setImages(propertyImages);
 
-        storageService.store(image, uploadDir);
-        PropertyImages newImage = new PropertyImages();
-        newImage.setImageUrl('/' + propertyDirectory.toString().replace('\\', '/') + "/" + image.getOriginalFilename());
-        property.addImage(newImage);
+        for (MultipartFile image : imageFiles) {
+            if (!image.isEmpty()) {
+                storageService.store(image, uploadDir);
+
+                PropertyImages newImage = new PropertyImages();
+                newImage.setImageUrl('/' + propertyDirectory.toString().replace('\\', '/') + "/" + image.getOriginalFilename());
+                property.addImage(newImage);
+            }
+            }
         property.setHostId(hostProfile);
         propertyService.update(property);
         return "redirect:/properties/yourProperties";

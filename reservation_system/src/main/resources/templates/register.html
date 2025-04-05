@@ -20,6 +20,8 @@
                     class="form-control"
                     required
             />
+            <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+
         </div>
         <div class="mb-3">
             <input

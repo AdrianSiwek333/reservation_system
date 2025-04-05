@@ -11,6 +11,9 @@
 <div class="container w-25 border p-4 rounded shadow">
     <h2 class="text-center">Login</h2>
     <form th:action="@{/login}" th:object="${user}" method="post">
+        <div class="alert alert-danger" th:if="${param.error}">
+            <p>Incorrect login or password</p>
+        </div>
         <div class="mb-3">
             <input
                     placeholder="Email"

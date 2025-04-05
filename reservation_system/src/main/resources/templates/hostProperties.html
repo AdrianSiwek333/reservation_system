@@ -15,7 +15,6 @@
   <table class="table table-striped">
     <thead class="table-dark">
     <tr>
-      <th>ID</th>
       <th>Nazwa</th>
       <th>Adres</th>
       <th>Miasto</th>
@@ -30,7 +29,6 @@
     </thead>
     <tbody>
     <tr th:each="property : ${properties}">
-      <td th:text="${property.propertyId}"></td>
       <td th:text="${property.propertyName}"></td>
       <td th:text="${property.address}"></td>
       <td th:text="${property.city}"></td>
