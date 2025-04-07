@@ -134,6 +134,10 @@ public class Property {
         this.hostId = hostId;
     }
 
+    public String getEmptyPhoto(){
+        return "/upload-dir/photos/property/empty.jpg";
+    }
+
     public Property(){}
 
     public Property(int propertyId, String propertyName, String address, String city, String area, String description, boolean isActive, Country country, PropertyType propertyTypeId, HostProfile hostId, List<PropertyImages> images, int dayPrice) {

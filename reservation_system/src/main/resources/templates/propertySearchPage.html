@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Properties</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <header class="bg-primary text-white text-center py-5">
     <h1>Find Your Perfect Stay</h1>
@@ -15,31 +16,19 @@
     <form class="container mt-3" th:action="@{/properties/view/browse}" method="get">
         <div class="row gy-2 gx-3 justify-content-center">
             <div class="col-md-4 col-lg-4">
-                <label>
-                    <input type="text" name="query" class="form-control" placeholder="Search city or hotel..." th:value="${query}">
-                </label>
+                <input type="text" name="query" class="form-control" placeholder="Search city or hotel..." th:value="${query}">
             </div>
             <div class="col-md-3 col-lg-2">
-                <label>
-                    <!--/*@thymesVar id="startDate" type=""*/-->
-                    <input type="date" name="startDate" class="form-control" th:value="${startDate}">
-                </label>
+                <input type="date" name="startDate" class="form-control" th:value="${startDate}">
             </div>
             <div class="col-md-3 col-lg-2">
-                <label>
-                    <!--/*@thymesVar id="endDate" type="java.time.LocalDate"*/-->
-                    <input type="date" name="endDate" class="form-control" th:value="${endDate}">
-                </label>
+                <input type="date" name="endDate" class="form-control" th:value="${endDate}">
             </div>
             <div class="col-md-3 col-lg-2">
-                <label>
-                    <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
-                </label>
+                <input type="number" name="minPrice" class="form-control" placeholder="Min Price" th:value="${minPrice}">
             </div>
             <div class="col-md-3 col-lg-2">
-                <label>
-                    <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
-                </label>
+                <input type="number" name="maxPrice" class="form-control" placeholder="Max Price" th:value="${maxPrice}">
             </div>
             <div class="col-md-12 col-lg-2 text-center">
                 <button type="submit" class="btn btn-warning w-100">Search</button>
@@ -53,7 +42,10 @@
     <div class="row">
         <div th:each="property : ${properties}" class="col-md-4">
             <div class="card mb-4">
-                <img th:src="${property.images.size() > 0 ? property.images[0].imageUrl : 'https://via.placeholder.com/300'}" class="card-img-top" alt="Property Image">
+                <img th:src="${property.images.size() > 0 ? property.images[0].imageUrl : property.getEmptyPhoto()}"
+                     class="card-img-top img-fixed"
+                     alt="Property photo"
+                     loading="lazy">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${property.propertyName}"></h5>
                     <p class="card-text" th:text="${property.getCountry().getCountryName()} + ', ' + ${property.getCity()}"></p>

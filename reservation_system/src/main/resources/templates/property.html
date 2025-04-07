@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +7,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container mt-5">
   <h2 class="mb-4">Add New Property</h2>
 
   <form th:action="@{/properties/update}" th:object="${property}" method="post" enctype="multipart/form-data">
-    <input hidden type="text" th:field="*{propertyId}">
-    <input hidden type="text" th:field="*{hostId}">
+    <label>
+      <input hidden type="text" th:field="*{propertyId}">
+    </label>
+    <label>
+      <input hidden type="text" th:field="*{hostId}">
+    </label>
     <div class="mb-3">
       <label for="propertyName" class="form-label">Property Name</label>
       <input type="text" th:field="*{propertyName}" class="form-control" id="propertyName" name="propertyName" required>
@@ -37,7 +40,7 @@
 
     <div class="mb-3">
       <label for="area" class="form-label">Area</label>
-      <input type="number" th:field="*{dayPrice}" class="form-control" id="dayPrice" name="area">
+      <label for="dayPrice"></label><input type="number" th:field="*{dayPrice}" class="form-control" id="dayPrice" name="area">
     </div>
 
     <div class="mb-3">
@@ -48,40 +51,44 @@
     <div class="mb-3">
       <label class="form-label">Active</label>
       <div>
-        <input type="radio" id="activeYes" name="active" value="true" checked>
+        <input type="radio" id="activeYes" name="active" value="true" th:checked="*{isActive() == true}">
         <label for="activeYes">Yes</label>
 
-        <input type="radio" id="activeNo" name="active" value="false">
+        <input type="radio" id="activeNo" name="active" value="false" th:checked="*{isActive() == false}">
         <label for="activeNo">No</label>
       </div>
     </div>
     <div class="mb-3">
-      <select
-              required
-              class="form-control"
-              th:field="*{propertyTypeId}"
-      >
-        <th:block th:each="propertyType :${propertyType}">
-          <option
-                  th:text="${propertyType.getTypeName()}"
-                  th:value="${propertyType.getPropertyTypeId()}"
-          ></option>
-        </th:block>
-      </select>
+      <label>
+        <select
+                required
+                class="form-control"
+                th:field="*{propertyTypeId}"
+        >
+          <th:block th:each="propertyType :${propertyType}">
+            <option
+                    th:text="${propertyType.getTypeName()}"
+                    th:value="${propertyType.getPropertyTypeId()}"
+            ></option>
+          </th:block>
+        </select>
+      </label>
     </div>
     <div class="mb-3">
-      <select
-              required
-              class="form-control"
-              th:field="*{country}"
-      >
-        <th:block th:each="country :${countries}">
-          <option
-                  th:text="${country.getCountryName()}"
-                  th:value="${country.getCountryId()}"
-          ></option>
-        </th:block>
-      </select>
+      <label>
+        <select
+                required
+                class="form-control"
+                th:field="*{country}"
+        >
+          <th:block th:each="country :${countries}">
+            <option
+                    th:text="${country.getCountryName()}"
+                    th:value="${country.getCountryId()}"
+            ></option>
+          </th:block>
+        </select>
+      </label>
     </div>
 
     <div class="mb-3">
@@ -92,6 +99,22 @@
     <button type="submit" class="btn btn-success">Add Property</button>
     <a th:href="@{/properties/yourProperties}" class="btn btn-secondary">Cancel</a>
   </form>
+
+  <div class="mb-3">
+    <label class="form-label">Existing Images</label>
+    <div>
+      <div th:each="image : ${property.images}">
+        <div class="d-flex align-items-center mb-2">
+          <img th:src="@{${image.imageUrl}}" class="img-thumbnail" alt="Property Image" style="width: 100px; height: 100px;">
+          <form th:action="@{/properties/removeImage}" method="post">
+            <input type="hidden" th:name="propertyId" th:value="${property.propertyId}">
+            <input type="hidden" th:name="imageId" th:value="${image.getPropertyImageId()}">
+            <button type="submit" class="btn btn-danger ms-2">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

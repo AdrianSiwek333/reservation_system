@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +45,13 @@ public class PropertyController {
     private final CountryService countryService;
     private final StorageService storageService;
     private final Path rootLocation;
+    private final PropertyImagesService propertyImagesService;
 
     public PropertyController(UsersService usersService, PropertyService propertyService,
                               HostProfileService hostProfileService, PropertyTypeService propertyTypeService,
                               CountryService countryService,
                               StorageService storageService,
-                              StorageProperties storageProperties) {
+                              StorageProperties storageProperties, PropertyImagesService propertyImagesService) {
         this.usersService = usersService;
         this.propertyService = propertyService;
         this.hostProfileService = hostProfileService;
@@ -57,6 +59,7 @@ public class PropertyController {
         this.countryService = countryService;
         this.storageService = storageService;
         this.rootLocation = Paths.get(storageProperties.getLocation());
+        this.propertyImagesService = propertyImagesService;
     }
 
     protected HostProfile getHostProfileIfHost(){
@@ -121,64 +124,46 @@ public class PropertyController {
             return "redirect:/accessDenied";
         }
 
-        Property property = propertyService.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("Property not found")
-        );
-
-        model.addAttribute("propertyType", propertyTypeService.findAll());
-        model.addAttribute("property", property);
-        model.addAttribute("countries", countryService.findAll());
+        prepareFormModelByPropertyId(model, id);
         return "property";
     }
 
     @PostMapping("/update")
     public String updateProperty(@Valid @ModelAttribute("property") Property property,
                                  BindingResult bindingResult,
-                                 @RequestParam("imageFiles") MultipartFile[] imageFiles,
+                                 @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles,
                                  RedirectAttributes redirectAttributes,
                                  Model model) {
 
         HostProfile hostProfile = getHostProfileIfHost();
-        if(hostProfile == null){
+        if (hostProfile == null) {
             return "redirect:/accessDenied";
         }
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors());
-            model.addAttribute("property", property);
-            model.addAttribute("propertyType", propertyTypeService.findAll());
-            model.addAttribute("countries", countryService.findAll());
+            prepareFormModel(model, property);
             return "property";
         }
 
-        String uploadDir = "photos/property/" + property.getPropertyId();
-        Path propertyDirectory = rootLocation.resolve(uploadDir);
-        if(!Files.exists(propertyDirectory)){
-            try{
-                Files.createDirectories(propertyDirectory);
-            }catch(IOException e){
-                throw new StorageException("Failed to create directory for property");
-            }
+        Path propertyDirectory = prepareImageDirectory(property.getPropertyId());
+        property.setImages(fetchExistingImages(property.getPropertyId()));
+
+        if (imageFiles != null) {
+            Arrays.stream(imageFiles)
+                    .filter(file -> !file.isEmpty())
+                    .forEach(file -> {
+                        storageService.store(file, "photos/property/" + property.getPropertyId());
+
+                        PropertyImages newImage = new PropertyImages();
+                        newImage.setImageUrl(buildImageUrl(propertyDirectory, file.getOriginalFilename()));
+                        property.addImage(newImage);
+                    });
         }
 
-        List<PropertyImages> propertyImages = propertyService.findById(property.getPropertyId())
-                .map(Property::getImages)
-                .orElse(new ArrayList<>());
-        property.setImages(propertyImages);
-
-        property.setImages(propertyImages);
-
-        for (MultipartFile image : imageFiles) {
-            if (!image.isEmpty()) {
-                storageService.store(image, uploadDir);
-
-                PropertyImages newImage = new PropertyImages();
-                newImage.setImageUrl('/' + propertyDirectory.toString().replace('\\', '/') + "/" + image.getOriginalFilename());
-                property.addImage(newImage);
-            }
-            }
         property.setHostId(hostProfile);
         propertyService.update(property);
+
         return "redirect:/properties/yourProperties";
     }
 
@@ -214,4 +199,69 @@ public class PropertyController {
 
         return "propertySearchPage";
     }
+
+    @PostMapping("/removeImage")
+    public String removeImage(@RequestParam("propertyId") int propertyId,
+                              @RequestParam("imageId") int imageId,
+                              Model model) {
+
+        HostProfile hostProfile = getHostProfileIfHost();
+
+        if(hostProfile == null){
+            return "redirect:/accessDenied";
+        }
+
+        Property property = propertyService.findById(propertyId).orElseThrow(
+                () -> new UsernameNotFoundException("Property not found")
+        );
+
+        property.removeImage(propertyImagesService.findById(imageId).orElseThrow(
+                () -> new UsernameNotFoundException("image not found")
+        ));
+
+        prepareFormModelByPropertyId(model, propertyId);
+
+
+        return "property";
+    }
+
+    private void prepareFormModel(Model model, Property property) {
+        model.addAttribute("property", property);
+        model.addAttribute("propertyType", propertyTypeService.findAll());
+        model.addAttribute("countries", countryService.findAll());
+    }
+
+    private void prepareFormModelByPropertyId(Model model, int propertyId) {
+
+        Property property = propertyService.findById(propertyId).orElseThrow(
+                () -> new UsernameNotFoundException("Property not found")
+        );
+
+        model.addAttribute("propertyType", propertyTypeService.findAll());
+        model.addAttribute("property", property);
+        model.addAttribute("countries", countryService.findAll());
+    }
+
+    private Path prepareImageDirectory(int propertyId) {
+        Path dir = rootLocation.resolve("photos/property/" + propertyId);
+        try {
+            Files.createDirectories(dir);
+        } catch (IOException e) {
+            throw new StorageException("Failed to create directory for property", e);
+        }
+        return dir;
+    }
+
+    private List<PropertyImages> fetchExistingImages(int propertyId) {
+        return propertyService.findById(propertyId)
+                .map(Property::getImages)
+                .orElseGet(ArrayList::new);
+    }
+
+    private String buildImageUrl(Path directory, String fileName) {
+        return "/" + directory.toString().replace('\\', '/') + "/" + fileName;
+    }
+
+
+
 }
