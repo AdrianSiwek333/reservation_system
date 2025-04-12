@@ -47,7 +47,7 @@
             <h5>Images:</h5>
             <div class="row">
                 <div class="col-4" th:each="image : ${reservation.propertyId.images}">
-                    <img th:src="'/' + ${image.imageUrl}" class="img-fluid" alt="Property Image">
+                    <img th:src="${image.imageUrl}" class="img-fluid" alt="Property Image">
                 </div>
             </div>
         </div>

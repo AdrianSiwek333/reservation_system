@@ -188,7 +188,7 @@ public class PropertyController {
                                 Model model) {
         Pageable pageable = PageRequest.of(page - 1, 9, Sort.by("propertyName").ascending());
 
-        Page<Property> propertiesPage = propertyService.getProperties(query, minPrice, maxPrice, pageable);
+        Page<Property> propertiesPage = propertyService.getProperties(query, minPrice, maxPrice, startDate, endDate, pageable);
 
         model.addAttribute("properties", propertiesPage.getContent());
         model.addAttribute("totalPages", propertiesPage.getTotalPages());

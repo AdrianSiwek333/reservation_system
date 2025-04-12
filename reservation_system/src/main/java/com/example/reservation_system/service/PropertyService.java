@@ -5,8 +5,10 @@ import com.example.reservation_system.entity.Property;
 import com.example.reservation_system.repository.HostProfileRepository;
 import com.example.reservation_system.repository.PropertyRepository;
 import com.example.reservation_system.repository.UsersRepository;
+import com.example.reservation_system.specification.PropertySpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -48,15 +50,12 @@ public class PropertyService {
         return propertyRepository.calculatePrice(PropertyId, between);
     }
 
-    public Page<Property> getProperties(String query, Integer minPrice, Integer maxPrice, Pageable pageable) {
-        if (query != null && minPrice != null && maxPrice != null) {
-            return propertyRepository.findByQueryAndPriceRange(query, minPrice, maxPrice, pageable);
-        } else if (query != null) {
-            return propertyRepository.findByQuery(query, pageable);
-        } else if (minPrice != null && maxPrice != null) {
-            return propertyRepository.findByPriceRange(minPrice, maxPrice, pageable);
-        } else {
-            return propertyRepository.findAll(pageable);
-        }
+    public Page<Property> getProperties(String query, Integer minPrice, Integer maxPrice, LocalDate startDate,
+                                        LocalDate endDate, Pageable pageable) {
+        Specification<Property> spec = Specification.where(PropertySpecification.hasQuery(query))
+                .and(PropertySpecification.hasPriceRange(minPrice, maxPrice))
+                .and(PropertySpecification.hasDateRange(startDate, endDate));
+
+        return propertyRepository.findAll(spec, pageable);
     }
 }
