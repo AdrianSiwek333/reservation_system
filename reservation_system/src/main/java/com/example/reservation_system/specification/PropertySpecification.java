@@ -41,21 +41,21 @@ public class PropertySpecification {
     }
 
     public static Specification<Property> hasDateRange(LocalDate userStartDate, LocalDate userEndDate) {
-        return (root, query, cb) -> {
-            if (userStartDate == null || userEndDate == null) return cb.conjunction();
+        return (root, query, criteriaBuilder) -> {
+            if (userStartDate == null || userEndDate == null) return criteriaBuilder.conjunction();
 
             Subquery<Long> subquery = query.subquery(Long.class);
             Root<Reservation> reservationRoot = subquery.from(Reservation.class);
             subquery.select(reservationRoot.get("propertyId").get("id"));
 
-            Predicate overlaps = cb.and(
-                    cb.lessThanOrEqualTo(reservationRoot.get("reservationStartDate"), userEndDate),
-                    cb.greaterThanOrEqualTo(reservationRoot.get("reservationEndDate"), userStartDate)
+            Predicate overlaps = criteriaBuilder.and(
+                    criteriaBuilder.lessThanOrEqualTo(reservationRoot.get("reservationStartDate"), userEndDate),
+                    criteriaBuilder.greaterThanOrEqualTo(reservationRoot.get("reservationEndDate"), userStartDate)
             );
 
             subquery.where(overlaps);
 
-            return cb.not(root.get("id").in(subquery));
+            return criteriaBuilder.not(root.get("id").in(subquery));
         };
     }
 }

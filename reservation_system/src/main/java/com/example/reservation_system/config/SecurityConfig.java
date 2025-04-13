@@ -22,8 +22,8 @@ public class SecurityConfig {
     }
 
     private final String[] publicUrl = {"/",
-    "/register", "/register/**", "/upload-dir/photos/property/**", "/properties/view/**", "/api/**",
-    "properties/view/**"};
+    "/register", "/register/**", "/upload-dir/photos/property/**", "/upload-dir/photos/property/**",
+            "/properties/view/**", "/api/**", "properties/view/**", "/css/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,7 +32,6 @@ public class SecurityConfig {
                         .requestMatchers(publicUrl).permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form.loginPage("/login").permitAll())
                     .logout(logout ->{
                             logout.logoutUrl("/logout");
