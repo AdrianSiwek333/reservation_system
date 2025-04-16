@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 @RequestMapping("/reservation")
@@ -50,6 +51,48 @@ public class ReservationController {
         model.addAttribute("reservation", reservation);
 
         return "reservation";
+    }
+
+    @GetMapping("/list")
+    public String showReservationList(Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/accessDenied";
+        }
+
+        String username = authentication.getName();
+        Users user = usersService.findUserByEmail(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        List<Reservation> reservations = reservationService.findByUser(user);
+        model.addAttribute("reservations", reservations);
+
+        return "reservationList";
+    }
+
+    @GetMapping("/details/{id}")
+    public String showReservation(Model model, @PathVariable int id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication instanceof AnonymousAuthenticationToken) {
+            return "redirect:/accessDenied";
+        }
+
+        String username = authentication.getName();
+        Users user = usersService.findUserByEmail(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        Reservation reservation = reservationService.findById(id);
+
+        if(!reservation.getCustomerId().equals(user))
+            return "redirect:/accessDenied";
+
+        model.addAttribute("reservation", reservation);
+        return "reservationDetails";
+
     }
 
     @PostMapping("/create")
@@ -84,6 +127,6 @@ public class ReservationController {
         reservation.setPrice(propertyService.calculatePrice(reservation.getPropertyId().getPropertyId(),
                 reservation.getReservationStartDate(), reservation.getReservationEndDate()));
         reservationService.update(reservation);
-        return "redirect:/";
+        return "redirect:/reservation/details/" + reservation.getReservationId();
     }
 }

@@ -11,6 +11,9 @@
                     <li sec:authorize="isAuthenticated()" class="nav-item">
                         <a sec:authorize="hasAuthority('HOST')" class="nav-link" th:href="@{/properties/yourProperties}">Your Properties</a>
                     </li>
+                    <li sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link" th:href="@{/reservation/list}">Your Reservations</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/properties/view/browse}">Properties</a></li>
                     <li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}">Login</a></li>

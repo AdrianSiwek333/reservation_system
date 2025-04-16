@@ -2,6 +2,7 @@ package com.example.reservation_system.service;
 
 import com.example.reservation_system.entity.Property;
 import com.example.reservation_system.entity.Reservation;
+import com.example.reservation_system.entity.Users;
 import com.example.reservation_system.repository.PropertyRepository;
 import com.example.reservation_system.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,15 @@ public class ReservationService {
 
     public void update(Reservation reservation) {
         reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> findByUser(Users users) {
+        return reservationRepository.findByCustomerId(users);
+    }
+
+    public Reservation findById(int id) {
+        return reservationRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("No Reservation was found with id: " + id)
+        );
     }
 }

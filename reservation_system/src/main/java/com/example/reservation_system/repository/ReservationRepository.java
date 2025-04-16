@@ -2,6 +2,7 @@ package com.example.reservation_system.repository;
 
 import com.example.reservation_system.entity.Property;
 import com.example.reservation_system.entity.Reservation;
+import com.example.reservation_system.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +23,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     boolean existsByPropertyIdAndDateRange(@Param("propertyId") int propertyId,
                                            @Param("startDate") LocalDate startDate,
                                            @Param("endDate") LocalDate endDate);
+
+    List<Reservation> findByCustomerId(Users user);
 
 }
